@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>phonk</title>
-<meta name="description" content="Non ci sono cose quando non ci sono cose. Ma a volte ci sono.">
+<meta name="description" content="There are no things when there are no things. But sometimes there are.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
@@ -104,24 +104,24 @@
 <body>
 <main>
   <p class="frase">
-    <span>Non ci sono cose quando non ci sono cose.</span>
-    <span class="ma">Ma a volte ci sono.</span>
+    <span>There are no things when there are no things.</span>
+    <span class="ma">But sometimes there are.</span>
   </p>
 </main>
 
 <p class="firma"><a href="https://github.com/phonk">phonk</a></p>
 
 <script>
-  // Le cose che a volte ci sono.
+  // The things that sometimes are.
   const cose = [
-    "un drone in re", "una lamiera", "un modo dorico", "una corda piatta",
-    "un oscillatore che non sa di esserlo", "il ronzio del frigo",
-    "una nota tenuta troppo a lungo", "un riverbero senza stanza",
-    "la pioggia su un tetto di lamiera", "un basso dimenticato",
-    "una cassa che arriva in ritardo", "il silenzio dopo il silenzio",
-    "una formante", "un battito", "un la a 432, forse",
-    "la neve sulla Bisalta", "un nastro che rallenta",
-    "una frase a metà", "niente, ma per poco", "un'idea alle tre di notte"
+    "a drone in D", "a sheet of metal", "a Dorian mode", "a flatwound string",
+    "an oscillator that doesn't know it is one", "the hum of the fridge",
+    "a note held too long", "a reverb without a room",
+    "rain on a tin roof", "a forgotten bass",
+    "a kick that arrives late", "the silence after the silence",
+    "a formant", "a heartbeat", "an A at 432, maybe",
+    "snow on the Bisalta", "a tape slowing down",
+    "half a sentence", "nothing, but only for a moment", "an idea at 3 a.m."
   ];
 
   const ridotto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -139,7 +139,7 @@
     const el = document.createElement("span");
     el.className = "cosa";
     el.textContent = scegli();
-    // lontano dal centro, dove abita la frase
+    // away from the centre, where the sentence lives
     if (x === undefined) {
       const lato = Math.random() < 0.5 ? -1 : 1;
       x = 50 + lato * (20 + Math.random() * 14);
@@ -155,14 +155,14 @@
     el.addEventListener("animationend", () => el.remove());
   }
 
-  // A volte: non con regolarità.
+  // Sometimes: never on a schedule.
   function forse() {
     if (Math.random() < 0.6) appare();
     setTimeout(forse, 2500 + Math.random() * 6000);
   }
   setTimeout(forse, 4500);
 
-  // E a volte le porti tu.
+  // And sometimes you bring them.
   document.addEventListener("pointerdown", e => {
     if (e.target.closest("a")) return;
     appare(e.clientX, e.clientY);

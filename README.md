@@ -1,7 +1,7 @@
 # phonk.github.io
 
-Non ci sono cose quando non ci sono cose.
-Ma a volte ci sono.
+There are no things when there are no things.
+But sometimes there are.
 
-Una pagina quasi vuota. Ogni tanto, ai margini, compare qualcosa e poi se ne va.
-Toccando lo schermo se ne fa comparire una.
+An almost empty page. Every now and then, at the edges, something appears and then goes away.
+Tap the screen to make one appear.
