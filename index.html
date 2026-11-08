@@ -1,1 +1,172 @@
-Non ci sono cose quando non ci sono cose. Ma a volte ci sono.
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>phonk</title>
+<meta name="description" content="Non ci sono cose quando non ci sono cose. Ma a volte ci sono.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --ink: #1d1c1a;
+    --faint: #8a857b;
+    --thing: #6b5e4a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121211;
+      --ink: #e8e4da;
+      --faint: #6f6b63;
+      --thing: #b8a888;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "EB Garamond", Georgia, serif;
+    overflow: hidden;
+    cursor: crosshair;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 0 16px;
+    pointer-events: none;
+  }
+
+  .frase {
+    max-width: 34ch;
+    text-wrap: balance;
+    text-align: center;
+    font-size: clamp(1.25rem, 3.2vw, 1.9rem);
+    line-height: 1.5;
+    position: relative;
+    z-index: 2;
+  }
+  .frase span { display: block; }
+  .frase .ma {
+    font-style: italic;
+    opacity: 0;
+    animation: arriva 2.4s ease 1.6s forwards;
+  }
+
+  .cosa {
+    position: fixed;
+    font-style: italic;
+    font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+    color: var(--thing);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    animation: ce var(--durata, 7s) ease-in-out forwards;
+    z-index: 1;
+  }
+
+  .firma {
+    position: fixed;
+    bottom: 18px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--faint);
+    pointer-events: auto;
+  }
+  .firma a { color: inherit; text-decoration: none; }
+  .firma a:hover { color: var(--ink); }
+
+  @keyframes arriva { to { opacity: 1; } }
+  @keyframes ce {
+    0%   { opacity: 0;    filter: blur(3px); }
+    25%  { opacity: 0.9;  filter: blur(0); }
+    70%  { opacity: 0.75; filter: blur(0); }
+    100% { opacity: 0;    filter: blur(2px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .frase .ma { animation: none; opacity: 1; }
+    .cosa { animation-duration: 0.01s; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <p class="frase">
+    <span>Non ci sono cose quando non ci sono cose.</span>
+    <span class="ma">Ma a volte ci sono.</span>
+  </p>
+</main>
+
+<p class="firma"><a href="https://github.com/phonk">phonk</a></p>
+
+<script>
+  // Le cose che a volte ci sono.
+  const cose = [
+    "un drone in re", "una lamiera", "un modo dorico", "una corda piatta",
+    "un oscillatore che non sa di esserlo", "il ronzio del frigo",
+    "una nota tenuta troppo a lungo", "un riverbero senza stanza",
+    "la pioggia su un tetto di lamiera", "un basso dimenticato",
+    "una cassa che arriva in ritardo", "il silenzio dopo il silenzio",
+    "una formante", "un battito", "un la a 432, forse",
+    "la neve sulla Bisalta", "un nastro che rallenta",
+    "una frase a metà", "niente, ma per poco", "un'idea alle tre di notte"
+  ];
+
+  const ridotto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let ultima = -1;
+
+  function scegli() {
+    let i;
+    do { i = Math.floor(Math.random() * cose.length); } while (i === ultima);
+    ultima = i;
+    return cose[i];
+  }
+
+  function appare(x, y) {
+    if (ridotto) return;
+    const el = document.createElement("span");
+    el.className = "cosa";
+    el.textContent = scegli();
+    // lontano dal centro, dove abita la frase
+    if (x === undefined) {
+      const lato = Math.random() < 0.5 ? -1 : 1;
+      x = 50 + lato * (20 + Math.random() * 14);
+      y = 12 + Math.random() * 76;
+      el.style.left = x + "vw";
+      el.style.top = y + "vh";
+    } else {
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+    }
+    el.style.setProperty("--durata", (5 + Math.random() * 5).toFixed(1) + "s");
+    document.body.appendChild(el);
+    el.addEventListener("animationend", () => el.remove());
+  }
+
+  // A volte: non con regolarità.
+  function forse() {
+    if (Math.random() < 0.6) appare();
+    setTimeout(forse, 2500 + Math.random() * 6000);
+  }
+  setTimeout(forse, 4500);
+
+  // E a volte le porti tu.
+  document.addEventListener("pointerdown", e => {
+    if (e.target.closest("a")) return;
+    appare(e.clientX, e.clientY);
+  });
+</script>
+</body>
+</html>
