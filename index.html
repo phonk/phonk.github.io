@@ -58,7 +58,54 @@
   .frase .ma {
     font-style: italic;
     opacity: 0;
-    animation: arriva 2.4s ease 1.6s forwards;
+    animation: arriva 1.8s ease .6s forwards;
+  }
+
+  /* the things that are */
+  .cose-vere {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: clamp(2rem, 6vw, 4.5rem);
+    margin-top: clamp(2.6rem, 7vh, 4.5rem);
+    pointer-events: auto;
+    opacity: 0;
+    animation: arriva 1.6s ease 1.2s forwards;
+    position: relative;
+    z-index: 2;
+  }
+  .cose-vere a {
+    display: block;
+    text-align: center;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .cose-vere .n {
+    display: inline-block;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+    line-height: 1.2;
+    background: linear-gradient(currentColor, currentColor) 50% 100% / 0 1px no-repeat;
+    transition: background-size .6s ease;
+    padding-bottom: 3px;
+  }
+  .cose-vere a:hover .n, .cose-vere a:focus-visible .n { background-size: 100% 1px; }
+  .cose-vere a:focus-visible { outline: none; }
+  .cose-vere .d {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.92rem;
+    line-height: 1.35;
+    color: var(--faint);
+    max-width: 15ch;
+    margin-inline: auto;
+    transition: color .6s;
+  }
+  .cose-vere a:hover .d { color: var(--thing); }
+  @media (max-width: 560px) {
+    .cose-vere { flex-direction: column; gap: 1.5rem; margin-top: 2.4rem; }
+    .cose-vere .d { max-width: none; }
   }
 
   .cosa {
@@ -74,25 +121,6 @@
     z-index: 1;
   }
 
-  /* things that, when they are there, can be entered */
-  .cosa.porta {
-    pointer-events: auto;
-    cursor: pointer;
-    color: var(--ink);
-    text-decoration: none;
-  }
-  .cosa.porta small {
-    display: block;
-    text-align: center;
-    font-style: normal;
-    font-size: 0.68em;
-    letter-spacing: 0.3em;
-    color: var(--faint);
-    margin-top: 2px;
-  }
-  .cosa.porta:hover { animation-play-state: paused; }
-  .cosa.porta:hover small { color: var(--ink); }
-
   .firma {
     position: fixed;
     bottom: 18px;
@@ -105,20 +133,6 @@
   }
   .firma a { color: inherit; text-decoration: none; transition: color .4s; }
   .firma a:hover, .firma a:focus-visible { color: var(--ink); outline: none; }
-  .firma .dentro {
-    display: inline-block;
-    max-width: 0;
-    overflow: hidden;
-    vertical-align: bottom;
-    white-space: nowrap;
-    opacity: 0;
-    transition: max-width 1.2s ease, opacity 1.2s ease;
-  }
-  .firma:hover .dentro, .firma:focus-within .dentro, .firma.aperta .dentro {
-    max-width: 30em;
-    opacity: 1;
-  }
-  .firma .dentro a { margin-left: 1.4em; font-style: italic; letter-spacing: 0.08em; }
 
   @keyframes arriva { to { opacity: 1; } }
   @keyframes ce {
@@ -131,19 +145,26 @@
   @media (prefers-reduced-motion: reduce) {
     .frase .ma { animation: none; opacity: 1; }
     .cosa { animation-duration: 0.01s; }
-    .firma .dentro { transition: none; }
+    .cose-vere { animation: none; opacity: 1; }
   }
 </style>
 </head>
 <body>
 <main>
-  <p class="frase">
-    <span>There are no things when there are no things.</span>
-    <span class="ma">But sometimes there are.</span>
-  </p>
+  <div>
+    <p class="frase">
+      <span>There are no things when there are no things.</span>
+      <span class="ma">But sometimes there are.</span>
+    </p>
+    <ul class="cose-vere">
+      <li><a href="/sempre/"><span class="n">sempre</span><span class="d">a tambura drone to play over</span></a></li>
+      <li><a href="/lamiera/"><span class="n">lamiera</span><span class="d">a handpan under your fingers</span></a></li>
+      <li><a href="/tuva/"><span class="n">tuva</span><span class="d">a formant lab for the Yamaha FS1R</span></a></li>
+    </ul>
+  </div>
 </main>
 
-<p class="firma"><a class="nome" href="https://github.com/phonk">phonk</a><span class="dentro"><a href="/sempre/">sempre</a><a href="/lamiera/">lamiera</a><a href="/tuva/">tuva</a></span></p>
+<p class="firma"><a href="https://github.com/phonk">phonk</a></p>
 
 <script>
   // The things that sometimes are.
@@ -158,14 +179,6 @@
     "half a sentence", "nothing, but only for a moment", "an idea at 3 a.m."
   ];
 
-  // A few things are doors.
-  const porte = [
-    { frase: "a drone that never ends",      nome: "sempre",  href: "/sempre/" },
-    { frase: "a sheet of metal, still ringing", nome: "lamiera", href: "/lamiera/" },
-    { frase: "a throat full of formants",    nome: "tuva",    href: "/tuva/" }
-  ];
-  let ultimaPorta = -1;
-
   const ridotto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let ultima = -1;
 
@@ -176,34 +189,19 @@
     return cose[i];
   }
 
-  function appare(x, y, porta) {
+  function appare(x, y) {
     if (ridotto) return;
     let el;
-    if (porta) {
-      const aperte = [...document.querySelectorAll(".porta")].map(a => a.getAttribute("href"));
-      const libere = porte.map((p, k) => k).filter(k => k !== ultimaPorta && !aperte.includes(porte[k].href));
-      if (!libere.length) return appare(x, y, false);
-      const i = libere[Math.floor(Math.random() * libere.length)];
-      ultimaPorta = i;
-      el = document.createElement("a");
-      el.className = "cosa porta";
-      el.href = porte[i].href;
-      el.textContent = porte[i].frase;
-      const n = document.createElement("small");
-      n.textContent = porte[i].nome;
-      el.appendChild(n);
-    } else {
-      el = document.createElement("span");
-      el.className = "cosa";
-      el.textContent = scegli();
-    }
+    el = document.createElement("span");
+    el.className = "cosa";
+    el.textContent = scegli();
     // away from the centre, where the sentence lives
     if (x === undefined) {
       const lato = Math.random() < 0.5 ? -1 : 1;
       if (innerWidth < 700) {
-        // narrow screens: above or below the sentence
+        // narrow screens: only in the empty band at the top
         x = 20 + Math.random() * 60;
-        y = lato < 0 ? 8 + Math.random() * 28 : 60 + Math.random() * 26;
+        y = 5 + Math.random() * 15;
       } else {
         x = 50 + lato * (20 + Math.random() * 14);
         y = 12 + Math.random() * 76;
@@ -214,8 +212,7 @@
       el.style.left = x + "px";
       el.style.top = y + "px";
     }
-    el.style.setProperty("--durata", porta ? (11 + Math.random() * 4).toFixed(1) + "s"
-                                            : (5 + Math.random() * 5).toFixed(1) + "s");
+    el.style.setProperty("--durata", (5 + Math.random() * 5).toFixed(1) + "s");
     document.body.appendChild(el);
     // keep every thing inside the screen, 16px from the edges
     const b = el.getBoundingClientRect(), m = 16;
@@ -228,24 +225,15 @@
 
   // Sometimes: never on a schedule.
   function forse() {
-    if (Math.random() < 0.6) appare(undefined, undefined, Math.random() < 0.3);
+    if (Math.random() < 0.6) appare();
     setTimeout(forse, 2500 + Math.random() * 6000);
   }
   setTimeout(forse, 4500);
 
-  // On touch screens the first tap on "phonk" opens it instead of leaving.
-  const firma = document.querySelector(".firma");
-  document.querySelector(".firma .nome").addEventListener("click", e => {
-    if (matchMedia("(hover: none)").matches && !firma.classList.contains("aperta")) {
-      e.preventDefault();
-      firma.classList.add("aperta");
-    }
-  });
-
   // And sometimes you bring them.
   document.addEventListener("pointerdown", e => {
     if (e.target.closest("a")) return;
-    appare(e.clientX, e.clientY, Math.random() < 0.25);
+    appare(e.clientX, e.clientY);
   });
 </script>
 <script data-goatcounter="https://phonk.goatcounter.com/count"
