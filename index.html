@@ -7,16 +7,16 @@
 <meta name="description" content="There are no things when there are no things. But sometimes there are.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  /* the same world as sempre, lamiera and deriva */
+  /* the colours of sempre, lamiera and deriva; the voice stays in Garamond */
   :root {
     --bg: #02040F;
     --ink: #E5DADA;
     --faint: #968E96;
     --thing: #968E96;
     --amber: #E59500;
-    --font: "Helvetica Neue", "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    --font: "EB Garamond", Georgia, serif;
     color-scheme: dark;
   }
 
@@ -27,7 +27,6 @@
     background: var(--bg);
     color: var(--ink);
     font-family: var(--font);
-    font-weight: 300;
     overflow: hidden;
     cursor: crosshair;
     -webkit-font-smoothing: antialiased;
@@ -84,7 +83,7 @@
   .cose-vere .n {
     display: inline-block;
     font-style: italic;
-    font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+    font-size: clamp(1.3rem, 2.4vw, 1.6rem);
     line-height: 1.2;
     background: linear-gradient(currentColor, currentColor) 50% 100% / 0 1px no-repeat;
     transition: background-size .6s ease, color .6s ease;
@@ -95,8 +94,8 @@
   .cose-vere .d {
     display: block;
     margin-top: 6px;
-    font-size: 0.86rem;
-    line-height: 1.4;
+    font-size: 0.92rem;
+    line-height: 1.35;
     color: var(--faint);
     max-width: 15ch;
     margin-inline: auto;
@@ -113,7 +112,6 @@
     font-style: italic;
     font-size: clamp(0.9rem, 1.6vw, 1.05rem);
     color: var(--thing);
-    font-weight: 300;
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
@@ -127,8 +125,8 @@
     bottom: 18px;
     left: 0; right: 0;
     text-align: center;
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
     color: var(--faint);
     pointer-events: auto;
   }
