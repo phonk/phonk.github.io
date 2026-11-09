@@ -7,21 +7,17 @@
 <meta name="description" content="There are no things when there are no things. But sometimes there are.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
+  /* the same world as sempre, lamiera and deriva */
   :root {
-    --bg: #f4f1ea;
-    --ink: #1d1c1a;
-    --faint: #8a857b;
-    --thing: #6b5e4a;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #121211;
-      --ink: #e8e4da;
-      --faint: #6f6b63;
-      --thing: #b8a888;
-    }
+    --bg: #02040F;
+    --ink: #E5DADA;
+    --faint: #968E96;
+    --thing: #968E96;
+    --amber: #E59500;
+    --font: "Helvetica Neue", "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    color-scheme: dark;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +26,8 @@
     height: 100%;
     background: var(--bg);
     color: var(--ink);
-    font-family: "EB Garamond", Georgia, serif;
+    font-family: var(--font);
+    font-weight: 300;
     overflow: hidden;
     cursor: crosshair;
     -webkit-font-smoothing: antialiased;
@@ -48,6 +45,8 @@
   .frase {
     max-width: 34ch;
     margin-inline: auto;
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
     text-wrap: balance;
     text-align: center;
     font-size: clamp(1.25rem, 3.2vw, 1.9rem);
@@ -85,25 +84,25 @@
   .cose-vere .n {
     display: inline-block;
     font-style: italic;
-    font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+    font-size: clamp(1.2rem, 2.2vw, 1.45rem);
     line-height: 1.2;
     background: linear-gradient(currentColor, currentColor) 50% 100% / 0 1px no-repeat;
-    transition: background-size .6s ease;
+    transition: background-size .6s ease, color .6s ease;
     padding-bottom: 3px;
   }
-  .cose-vere a:hover .n, .cose-vere a:focus-visible .n { background-size: 100% 1px; }
+  .cose-vere a:hover .n, .cose-vere a:focus-visible .n { background-size: 100% 1px; color: var(--amber); }
   .cose-vere a:focus-visible { outline: none; }
   .cose-vere .d {
     display: block;
     margin-top: 6px;
-    font-size: 0.92rem;
-    line-height: 1.35;
+    font-size: 0.86rem;
+    line-height: 1.4;
     color: var(--faint);
     max-width: 15ch;
     margin-inline: auto;
     transition: color .6s;
   }
-  .cose-vere a:hover .d { color: var(--thing); }
+  .cose-vere a:hover .d { color: var(--ink); }
   @media (max-width: 560px) {
     .cose-vere { flex-direction: column; gap: 1.5rem; margin-top: 2.4rem; }
     .cose-vere .d { max-width: none; }
@@ -114,6 +113,7 @@
     font-style: italic;
     font-size: clamp(0.9rem, 1.6vw, 1.05rem);
     color: var(--thing);
+    font-weight: 300;
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
@@ -127,8 +127,8 @@
     bottom: 18px;
     left: 0; right: 0;
     text-align: center;
-    font-size: 0.85rem;
-    letter-spacing: 0.18em;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
     color: var(--faint);
     pointer-events: auto;
   }
@@ -233,6 +233,16 @@
     else if (b.right > innerWidth - m) el.style.left = (innerWidth - m - b.width / 2) + "px";
     if (b.top < m) el.style.top = (m + b.height / 2) + "px";
     else if (b.bottom > innerHeight - 56) el.style.top = (innerHeight - 56 - b.height / 2) + "px";
+    // never on top of the sentence or the links: try a few other spots
+    if (x === undefined) {
+      const busy = [...document.querySelectorAll(".frase, .cose-vere")].map(n => n.getBoundingClientRect());
+      const hits = r => busy.some(q => r.left < q.right + 12 && r.right > q.left - 12 && r.top < q.bottom + 12 && r.bottom > q.top - 12);
+      for (let k = 0; k < 8 && hits(el.getBoundingClientRect()); k++) {
+        el.style.left = (12 + Math.random() * 76) + "vw";
+        el.style.top = (6 + Math.random() * 84) + "vh";
+      }
+      if (hits(el.getBoundingClientRect())) { el.remove(); return; }
+    }
     el.addEventListener("animationend", () => el.remove());
   }
 
